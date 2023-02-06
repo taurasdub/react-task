@@ -3,23 +3,24 @@ import Edit from "./Edit";
 import NewRecipe from "./NewRecipe";
 import RandomRecipe from "./RandomRecipe";
 import data from "./Data";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilter } from "../redux/filter";
 
 export default function RecipesList() {
+  const filter = useSelector((state) => state.filter);
   const [list, setList] = useState(data);
   const [extendedInformation, setExtendedInformation] = useState(null);
   const [edit, setEdit] = useState(false);
 
-  const [filter, setFilter] = useState({
-    name: "",
-    tags: "",
-    country: "",
-  });
+  const dispatch = useDispatch();
 
   function handleFilter(e) {
-    setFilter({
-      ...filter,
-      [e.target.name]: e.target.value,
-    });
+    dispatch(
+      setFilter({
+        name: e.target.name,
+        value: e.target.value,
+      })
+    );
   }
 
   const filteredRecipes = list.filter((recipe) => {
@@ -104,16 +105,27 @@ export default function RecipesList() {
                     <li key={listItem}>{listItem}</li>
                   ))}
                 </p>
-                <img src={item.imageUrl} alt={item.imageUrl} />
+
+                {item.imageUrl ? (
+                  <React.Fragment>
+                    <p>Photo of the final result:</p>
+                    <img src={item.imageUrl} alt={item.imageUrl} />
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment></React.Fragment>
+                )}
 
                 {item.videoUrl ? (
-                  <iframe
-                    src={
-                      `https://www.youtube.com/embed/` +
-                      item.videoUrl.split("=")[1].split("&")[0]
-                    }
-                    title={item.videoUrl}
-                  />
+                  <React.Fragment>
+                    <p>Video tutorial:</p>
+                    <iframe
+                      src={
+                        `https://www.youtube.com/embed/` +
+                        item.videoUrl.split("=")[1].split("&")[0]
+                      }
+                      title={item.videoUrl}
+                    />
+                  </React.Fragment>
                 ) : (
                   <React.Fragment></React.Fragment>
                 )}
