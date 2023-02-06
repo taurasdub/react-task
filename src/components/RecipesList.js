@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Edit from "./Edit";
+import NewRecipe from "./NewRecipe";
+import RandomRecipe from "./RandomRecipe";
 
 const data = [
   {
@@ -7,24 +9,31 @@ const data = [
     name: "pizza",
     tags: ["meat", "cheese", "dough"],
     country: "Italy",
-    extendedInformation: "here's extended information about pizza",
     preparationInstructions: ["1", "2", "3", "4", "5"],
+    ingredientsList: ["butter", "sugar"],
+    imageUrl:
+      "https://nidosreceptai.lt/wp-content/uploads/2018/08/Bulviu-kukuliai-su-varske-6Square-100x100.jpg",
+    videoUrl: "https://www.youtube.com/watch?v=g5oCDoyxbBk",
   },
   {
     id: 2,
     name: "orange juice",
     tags: ["orange"],
     country: "china",
-    extendedInformation: "here's extended information about orange juice",
     preparationInstructions: ["1", "2", "3", "4", "5"],
+    ingredientsList: ["butter", "sugar"],
+    imageUrl: "",
+    videoUrl: "",
   },
   {
     id: 3,
     name: "cheesburghaa",
     tags: ["meat", "salad", "buns", "tomato"],
     country: "USA",
-    extendedInformation: "here's extended information about cheesburgaa",
     preparationInstructions: ["1", "2", "3", "4", "5"],
+    ingredientsList: ["butter", "sugar"],
+    imageUrl: "",
+    videoUrl: "",
   },
 ];
 
@@ -32,14 +41,7 @@ export default function RecipesList() {
   const [list, setList] = useState(data);
   const [extendedInformation, setExtendedInformation] = useState(null);
   const [edit, setEdit] = useState(false);
-  const [addRecipe, setAddRecipe] = useState(false);
-  const [newRecipe, setNewRecipe] = useState({
-    id: null,
-    name: "",
-    tags: [],
-    country: "",
-    preparationInstructions: "",
-  });
+
   const [filter, setFilter] = useState({
     name: "",
     tags: "",
@@ -74,48 +76,6 @@ export default function RecipesList() {
     setEdit(item);
   }
 
-  function handleAddRecipe() {
-    setAddRecipe(!addRecipe);
-  }
-
-  function handleNewRecipeInput(e) {
-    setNewRecipe({
-      ...newRecipe,
-      [e.target.name]:
-        e.target.name === "tags" || e.target.name === "preparationInstructions"
-          ? e.target.value.split(",").map((list) => list)
-          : e.target.value,
-    });
-  }
-
-  function handleSubmitNewRecipe() {
-    setList([...list, { ...newRecipe, id: list.length + 1 }]);
-    setAddRecipe(false);
-    setNewRecipe({
-      id: null,
-      name: "",
-      tags: [],
-      country: "",
-      preparationInstructions: [],
-    });
-  }
-
-  function handleAddRandomRecipe(e) {
-    e.preventDefault();
-    fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
-      .then((response) => response.json())
-      .then((result) => {
-        result = {
-          id: result.meals[0].idMeal,
-          name: result.meals[0].strMeal,
-          tags: [result.meals[0].strCategory, result.meals[0].strArea],
-          country: result.meals[0].strArea,
-          preparationInstructions: [result.meals[0].strInstructions],
-        };
-        setList([...list, result]);
-      });
-  }
-
   return (
     <div>
       <form>
@@ -141,43 +101,8 @@ export default function RecipesList() {
           onChange={handleFilter}
         />
       </form>
-      <button onClick={handleAddRecipe}>Add Recipe</button>
-      <button onClick={handleAddRandomRecipe}>Add Random Recipe</button>
-      {addRecipe && (
-        <div>
-          <input
-            type="text"
-            name="name"
-            onChange={handleNewRecipeInput}
-            value={newRecipe.name}
-            placeholder="Name"
-          ></input>
-          <input
-            type="text"
-            name="tags"
-            onChange={handleNewRecipeInput}
-            value={newRecipe.tags}
-            placeholder="Tags (separated by comma)"
-          ></input>
-          <input
-            type="text"
-            name="country"
-            onChange={handleNewRecipeInput}
-            value={newRecipe.country}
-            placeholder="Country"
-          ></input>
-          <input
-            type="text"
-            name="preparationInstructions"
-            onChange={handleNewRecipeInput}
-            value={newRecipe.preparationInstructions}
-            placeholder="Preparation instruction"
-          ></input>
-          <button type="submit" onClick={handleSubmitNewRecipe}>
-            Add
-          </button>
-        </div>
-      )}
+      <NewRecipe setList={setList} list={list} />
+      <RandomRecipe setList={setList} list={list} />
       {filteredRecipes.map((item) =>
         edit === item.id ? (
           <Edit item={item} list={list} setList={setList} setEdit={setEdit} />
@@ -195,12 +120,39 @@ export default function RecipesList() {
             </ul>
             <p>Origin country: {item.country}</p>
             {extendedInformation === item && (
-              <p>
-                {item.preparationInstructions.map((listItem) => (
-                  <li key={listItem}>{listItem}</li>
-                ))}
-              </p>
+              <React.Fragment>
+                {item.ingredientsList ? (
+                  <p>
+                    List of ingredients:
+                    {item.ingredientsList.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </p>
+                ) : (
+                  <React.Fragment></React.Fragment>
+                )}
+                <p>
+                  Preparation instructions:
+                  {item.preparationInstructions.map((listItem) => (
+                    <li key={listItem}>{listItem}</li>
+                  ))}
+                </p>
+                <img src={item.imageUrl} alt={item.imageUrl} />
+
+                {item.videoUrl ? (
+                  <iframe
+                    src={
+                      `https://www.youtube.com/embed/` +
+                      item.videoUrl.split("=")[1].split("&")[0]
+                    }
+                    title={item.videoUrl}
+                  />
+                ) : (
+                  <React.Fragment></React.Fragment>
+                )}
+              </React.Fragment>
             )}
+            <br />
             <button onClick={() => handleEdit(item.id)}>edit recipe</button>
           </div>
         )

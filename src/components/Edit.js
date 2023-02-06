@@ -5,8 +5,10 @@ export default function Edit({ item, list, setList, setEdit }) {
         ? {
             ...li,
             [e.target.name]:
-              e.target.name === "tags"
-                ? e.target.value.split(",").map((tag) => tag.trim())
+              e.target.name === "tags" ||
+              e.target.name === "preparationInstructions" ||
+              e.target.name === "ingredientsList"
+                ? e.target.value.split(",").map((tag) => tag)
                 : e.target.value,
           }
         : li
@@ -16,24 +18,41 @@ export default function Edit({ item, list, setList, setEdit }) {
 
   return (
     <div>
-      <input
-        type="text"
-        name="name"
-        onChange={handleInput}
-        value={item.name}
-      ></input>
+      <input type="text" name="name" onChange={handleInput} value={item.name} />
       <input
         type="text"
         name="country"
         onChange={handleInput}
         value={item.country}
-      ></input>
+      />
+      <input type="text" name="tags" onChange={handleInput} value={item.tags} />
       <input
         type="text"
-        name="tags"
+        name="preparationInstructions"
         onChange={handleInput}
-        value={item.tags.join(", ")}
-      ></input>
+        value={item.preparationInstructions}
+      />
+      <input
+        type="text"
+        name="ingredientsList"
+        onChange={handleInput}
+        value={item.ingredientsList}
+        placeholder="List of ingredients"
+      />
+      <input
+        type="text"
+        name="imageUrl"
+        placeholder="image url"
+        onChange={handleInput}
+        value={item.imageUrl}
+      />
+      <input
+        type="text"
+        name="videoUrl"
+        placeholder="Video url"
+        onChange={handleInput}
+        value={item.videoUrl}
+      />
       <button type="submit" onClick={() => setEdit(false)}>
         Update
       </button>
