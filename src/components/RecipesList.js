@@ -5,11 +5,12 @@ import RandomRecipe from "./RandomRecipe";
 import data from "./Data";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../redux/filter";
+import { setExtendedInformation } from "../redux/extendedInfo";
 
 export default function RecipesList() {
   const filter = useSelector((state) => state.filter);
+  const extendedInformation = useSelector((state) => state.extendedInformation);
   const [list, setList] = useState(data);
-  const [extendedInformation, setExtendedInformation] = useState(null);
   const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export default function RecipesList() {
   });
 
   function handleInput(item) {
-    setExtendedInformation(item);
+    dispatch(setExtendedInformation(item));
   }
 
   function handleEdit(item) {
