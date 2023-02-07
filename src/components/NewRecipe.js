@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setAddRecipe } from "../redux/addRecipe";
 
 export default function NewRecipe({ setList, list }) {
-  const [addRecipe, setAddRecipe] = useState(false);
+  const addRecipe = useSelector((state) => state.addRecipe);
+
+  const dispatch = useDispatch();
+
+  // const [addRecipe, setAddRecipe] = useState(false);
   const [newRecipe, setNewRecipe] = useState({
     id: null,
     name: "",
@@ -27,11 +33,11 @@ export default function NewRecipe({ setList, list }) {
 
   function handleSubmitNewRecipe() {
     setList([...list, { ...newRecipe, id: list.length + 1 }]);
-    setAddRecipe(false);
+    dispatch(setAddRecipe(false));
   }
 
   function handleAddRecipe() {
-    setAddRecipe(!addRecipe);
+    dispatch(setAddRecipe(!addRecipe));
   }
 
   return (
