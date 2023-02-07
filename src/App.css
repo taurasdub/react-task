@@ -1,14 +1,51 @@
 #root {
-  color: white;
+  box-sizing: border-box;
 }
 
-body {
-  background-color: aquamarine;
+input {
+  width: 200px;
+  height: 100%;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 5px;
+  outline: none;
+  background: none;
+  padding: 9px;
+  margin: 0 10px 10px 10px;
+}
+
+.btn {
+  width: 150px;
+  font-weight: bold;
+  height: auto;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 5px;
+  outline: none;
+  background: none;
+  margin: 0 10px 10px 10px;
+}
+
+.btn:hover {
+  background-color: aqua;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-body {
   padding: 10px;
   margin: 20px;
-  width: 400px;
   background-color: rgb(39, 36, 36);
+  color: white;
+}
+
+.card-body .btn {
+  color: white;
+  border: 2px solid white;
+}
+
+.updateBody {
+  margin-left: 20px;
 }

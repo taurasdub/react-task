@@ -7,7 +7,6 @@ export default function NewRecipe({ setList, list }) {
 
   const dispatch = useDispatch();
 
-  // const [addRecipe, setAddRecipe] = useState(false);
   const [newRecipe, setNewRecipe] = useState({
     id: null,
     name: "",
@@ -38,11 +37,14 @@ export default function NewRecipe({ setList, list }) {
 
   function handleAddRecipe() {
     dispatch(setAddRecipe(!addRecipe));
+    setAddRecipe(!addRecipe);
   }
 
   return (
     <React.Fragment>
-      <button onClick={handleAddRecipe}>Add Recipe</button>
+      <button onClick={handleAddRecipe} className="btn">
+        Add Recipe
+      </button>
       {addRecipe && (
         <div>
           <input
@@ -94,7 +96,7 @@ export default function NewRecipe({ setList, list }) {
             value={newRecipe.videoUrl}
             placeholder="Video url"
           />
-          <button type="submit" onClick={handleSubmitNewRecipe}>
+          <button type="submit" onClick={handleSubmitNewRecipe} className="btn">
             Add
           </button>
         </div>

@@ -17,5 +17,9 @@ export default function RandomRecipe({ setList, list }) {
       });
   }
 
-  return <button onClick={handleAddRandomRecipe}>Add Random Recipe</button>;
+  return (
+    <button onClick={handleAddRandomRecipe} className="btn">
+      Add Random Recipe
+    </button>
+  );
 }
