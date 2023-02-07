@@ -1,4 +1,8 @@
+import { useDispatch } from "react-redux";
+
 export default function Edit({ item, list, setList, setEdit }) {
+  const dispatch = useDispatch();
+
   function handleInput(e) {
     const newList = list.map((li) =>
       li.id === item.id
@@ -53,7 +57,7 @@ export default function Edit({ item, list, setList, setEdit }) {
         onChange={handleInput}
         value={item.videoUrl}
       />
-      <button type="submit" onClick={() => setEdit(false)}>
+      <button type="submit" onClick={() => dispatch(setEdit(false))}>
         Update
       </button>
     </div>

@@ -6,12 +6,13 @@ import data from "./Data";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../redux/filter";
 import { setExtendedInformation } from "../redux/extendedInfo";
+import { setEdit } from "../redux/edit";
 
 export default function RecipesList() {
   const filter = useSelector((state) => state.filter);
   const extendedInformation = useSelector((state) => state.extendedInformation);
+  const edit = useSelector((state) => state.edit);
   const [list, setList] = useState(data);
-  const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -42,7 +43,7 @@ export default function RecipesList() {
   }
 
   function handleEdit(item) {
-    setEdit(item);
+    dispatch(setEdit(item));
   }
 
   return (
