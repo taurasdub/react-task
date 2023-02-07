@@ -2,19 +2,26 @@ import data from "./Data";
 import Edit from "./Edit";
 import NewRecipe from "./NewRecipe";
 import RandomRecipe from "./RandomRecipe";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { setFilter } from "../redux/filter";
 import { setExtendedInformation } from "../redux/extendedInfo";
 import { setEdit } from "../redux/edit";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function RecipesList() {
+  const localData = localStorage.getItem("recipes");
   const filter = useSelector((state) => state.filter);
   const extendedInformation = useSelector((state) => state.extendedInformation);
   const edit = useSelector((state) => state.edit);
-  const [list, setList] = useState(data);
+  const [list, setList] = useState(() => {
+    return localData ? JSON.parse(localData) : data;
+  });
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    localStorage.setItem("recipes", JSON.stringify(list));
+  }, [list]);
 
   function handleFilter(e) {
     dispatch(
