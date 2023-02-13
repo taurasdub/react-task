@@ -26,6 +26,7 @@ export default function Edit({ item, list, setList, setEdit }) {
       <form>
         <label for="name">Name</label>
         <input
+          id="name"
           type="text"
           name="name"
           onChange={handleInput}
